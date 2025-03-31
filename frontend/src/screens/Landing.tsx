@@ -1,5 +1,19 @@
+import { useNavigate } from 'react-router-dom';
+
 const Landing = () => {
-  return <div>Landing</div>;
+  const navigate = useNavigate();
+
+  return (
+    <div>
+      <button
+        onClick={() => {
+          navigate('/game');
+        }}
+      >
+        Join
+      </button>
+    </div>
+  );
 };
 
 export default Landing;
