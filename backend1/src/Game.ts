@@ -8,6 +8,7 @@ export class Game {
   private board: Chess;
   private moves: string[];
   private startTime: Date;
+  private moveCount = 0;
 
   constructor(player1: WebSocket, player2: WebSocket) {
     this.player1 = player1;
@@ -34,13 +35,13 @@ export class Game {
   }
 
   public makeMove(player: WebSocket, move: { from: string; to: string }): void {
-    if (player !== this.player1 || player !== this.player2) {
-      throw new Error('Invalid player');
-    }
+    // if (player !== this.player1 || player !== this.player2) {
+    //   throw new Error('Invalid player');
+    // }
     // 1. Validate the type of move using zod
-    if (this.board.moves.length % 2 === 0 && player !== this.player1) {
+    if (this.moveCount % 2 === 0 && player !== this.player1) {
       throw new Error('Not your turn');
-    } else if (this.board.moves.length % 2 === 1 && player !== this.player2) {
+    } else if (this.moveCount === 1 && player !== this.player2) {
       throw new Error('Not your turn');
     }
     // Is it this users move
@@ -87,7 +88,10 @@ export class Game {
         );
       }
     } catch (error) {
+      console.error('Error making move:', error);
       return;
+    } finally {
+      this.moveCount += 1;
     }
   }
 }
