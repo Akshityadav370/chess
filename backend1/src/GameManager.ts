@@ -11,6 +11,7 @@ export class GameManager {
 
   constructor() {
     this.Games = [];
+    this.users = [];
   }
 
   addUser(socket: WebSocket) {
@@ -33,12 +34,7 @@ export class GameManager {
           (game) => game.player1 === socket || game.player2 === socket
         );
         if (game) {
-          // Handle the move logic here
-          game.moves.push(data.move);
-          // Notify the other player about the move
-          const otherPlayer =
-            game.player1 === socket ? game.player2 : game.player1;
-          otherPlayer.send(JSON.stringify({ type: MOVE, move: data.move }));
+          game.makeMove(socket, data.move);
         }
       }
     });
